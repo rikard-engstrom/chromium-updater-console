@@ -3,11 +3,12 @@ Chromium updater for Windows built with .net
 
 Will download binaries from https://chromium.woolyss.com/
 Using the api that is documented at https://chromium.woolyss.com/#api
+
+# Limitations
 The current functionality will download 64-bit version.
 
 # Why?
-I couldn't get https://github.com/henrypp/chrlauncher to update my Chromium
-So I just made this super simple console application with the basic functionality that I wanted.
+I couldn't get https://github.com/henrypp/chrlauncher to update my Chromium so I just made this super simple console application with the basic functionality that I wanted.
 
 # How to use it
 1. Download the binaries
