@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace ChromiumUpdater.Services
 {
@@ -8,10 +7,19 @@ namespace ChromiumUpdater.Services
     {
         public static void ShutdownChrome()
         {
-            var processes = Process.GetProcesses()
-                .Where(x => x.Id != 0 && x.ProcessName != "System" && x.MainModule.ModuleName == "chrome.exe").ToList();
+            var processes = Process.GetProcesses();
 
-            processes.ForEach(p => p.CloseMainWindow());
+            foreach (var process in processes)
+            {
+                try
+                {
+                    if (process.Id != 0 && process.ProcessName != "System" && process.MainModule.ModuleName == "chrome.exe")
+                    {
+                        process.CloseMainWindow();
+                    }
+                }
+                catch { }
+            }
         }
 
         public static void LaunchChrome()
