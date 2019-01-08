@@ -37,7 +37,12 @@ namespace ChromiumUpdaterConsole
             ProcessService.ShutdownChrome();
 
             DeleteDirectoryIfExists(".\\bin");
-            Directory.Move(".\\temp\\chrome-win32", ".\\bin");
+
+            if (Directory.Exists(".\\temp\\chrome-win32"))
+                Directory.Move(".\\temp\\chrome-win32", ".\\bin");
+
+            if (Directory.Exists(".\\temp\\chrome-win"))
+                Directory.Move(".\\temp\\chrome-win", ".\\bin");
 
             ProcessService.LaunchChrome();
         }
