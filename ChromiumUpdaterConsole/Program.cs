@@ -9,6 +9,8 @@ namespace ChromiumUpdaterConsole
     {
         static void Main(string[] args)
         {
+            var chromeExe = args.Length == 1 ? args[0] : "chrome.exe";
+
             var installed = LocalVersionService.GetChromeVersion();
             Console.WriteLine($"Installed version {installed}");
 
@@ -17,7 +19,7 @@ namespace ChromiumUpdaterConsole
 
             if (available.Version != installed)
             {
-                Update(available);
+                Update(available, chromeExe);
             }
             else
             {
@@ -25,7 +27,7 @@ namespace ChromiumUpdaterConsole
             }
         }
 
-        static void Update(AvailableVersion available)
+        static void Update(AvailableVersion available, string chromeExe)
         {
             Console.WriteLine($"Downloading version {available.Version}");
             DownloadService.DownloadChrome(available.Download, available.Version);
@@ -34,7 +36,7 @@ namespace ChromiumUpdaterConsole
             ZipService.Unzip($"chrome-{available.Version}.zip", ".\\temp");
 
             Console.WriteLine("Shutting down Chrome");
-            ProcessService.ShutdownChrome();
+            ProcessService.ShutdownChrome(chromeExe);
 
             DeleteDirectoryIfExists(".\\bin");
 
@@ -44,7 +46,10 @@ namespace ChromiumUpdaterConsole
             if (Directory.Exists(".\\temp\\chrome-win"))
                 Directory.Move(".\\temp\\chrome-win", ".\\bin");
 
-            ProcessService.LaunchChrome();
+            if (chromeExe != "chrome.exe")
+                File.Move(".\\bin\\chrome.exe", $".\\bin\\{chromeExe}");
+
+            ProcessService.LaunchChrome(chromeExe);
         }
 
         static void DeleteDirectoryIfExists(string path)
